@@ -28,9 +28,14 @@ public class ApplicationUser implements UserDetails {
 
     public ApplicationUser() {};
 
-    public ApplicationUser(String username, String password){
+    public ApplicationUser(String username, String password, String first_Name, String last_Name, Date date_Of_Birth, String bio)
+    {
         this.username = username;
         this.password = password;
+        this.first_Name = first_Name;
+        this.last_Name = last_Name;
+        this.date_Of_Birth = date_Of_Birth;
+        this.bio = bio;
     }
 
     @Override

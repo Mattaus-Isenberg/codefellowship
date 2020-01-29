@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>welcome [[${username}]]</h1>
+<div>
+    <h3>
+        <span th:text="${loggedUser.first_Name}"></span>
+        <span th:text="${loggedUser.last_Name}"></span>
+        <span th:text="${loggedUser.date_Of_Birth}"></span>
+        <span th:text="${loggedUser.bio}"></span>
+    </h3>
+
+    <h2>Posts by [[${username}]]</h2>
+</div>
+
+</form>
+</body>
+</html>

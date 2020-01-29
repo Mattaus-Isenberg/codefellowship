@@ -1,6 +1,8 @@
 package com.echokinetic.CodeFellowship.Models;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import javax.persistence.*;
 import java.sql.Date;
 
@@ -14,15 +16,26 @@ public class Post
     String body;
     Date created_At_TimeStamp;
 
+    public ApplicationUser getUser()
+    {
+        return user;
+    }
+
+    public void setUser(ApplicationUser user)
+    {
+        this.user = user;
+    }
+
     @ManyToOne
     ApplicationUser user;
 
     public Post(){}
 
-    public Post(String body, Date created_At_TimeStamp)
+    public Post(String body, ApplicationUser user)
     {
         this.body = body;
-        this.created_At_TimeStamp = created_At_TimeStamp;
+        this.created_At_TimeStamp = new Date(System.currentTimeMillis());
+        this.user = user;
     }
 
 

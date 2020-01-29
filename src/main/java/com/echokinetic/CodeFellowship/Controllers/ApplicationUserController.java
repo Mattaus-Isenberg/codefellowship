@@ -4,13 +4,20 @@ package com.echokinetic.CodeFellowship.Controllers;
 
 import com.echokinetic.CodeFellowship.Models.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.security.Principal;
 import java.sql.Date;
+import java.util.ArrayList;
 
 @Controller
 public class ApplicationUserController {
@@ -32,12 +39,32 @@ public class ApplicationUserController {
         applicationUserRepository.save(newUser);
 
         // send them back home
-        return new RedirectView("/");
+        return new RedirectView("login");
     }
+
 
     @GetMapping("/login")
     public String showLoginForm(){
         return "login";
+    }
+
+    @GetMapping("/myprofile")
+    public String getProfile(Principal p, Model m)
+    {
+        ApplicationUser applicationUser = applicationUserRepository.findByUsername(p.getName());
+        m.addAttribute("loggedUser", applicationUser);
+        m.addAttribute("username", p.getName());
+        m.addAttribute("user", p);
+        return "myprofile";
+    }
+
+    @PostMapping("/login")
+    public RedirectView profilePage(Principal p, Model m)
+    {
+        ApplicationUser applicationUser =  applicationUserRepository.findByUsername(p.getName());
+        m.addAttribute("loggedUser", applicationUser);
+        m.addAttribute("user", p);
+        return new RedirectView("myprofile");
     }
 
     @GetMapping("/users/{id}")

@@ -2,10 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Registration</title>
 </head>
 <body>
-<h1>Made it past security, welcome [[${username}]]</h1>
+<nav>
+    <ul>
+        <a th:href="'/login'">Log in</a>
+    </ul>
+</nav>
+<h1>Please register</h1>
 
 <h2> Create new user</h2>
 <form action="/signup" method="POST">

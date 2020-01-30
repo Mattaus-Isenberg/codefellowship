@@ -14,8 +14,23 @@
         <span th:text="${loggedUser.date_Of_Birth}"></span>
         <span th:text="${loggedUser.bio}"></span>
     </h3>
+</div>
+<div>
+    <h2>Create a Post</h2>
+    <form method="POST" th:action="'/myprofile/posts'">
+        <label for="body">Post body</label>
+        <input type="text" id="body" name="body">
+        <input type="submit">
+    </form>
 
     <h2>Posts by [[${username}]]</h2>
+    <div th:each="post : ${loggedUser.posts}">
+        <p th:text="'Created ' + ${post.created_At_TimeStamp}"></p>
+        <p th:text="'Post: ' + ${post.body}"></p>
+        <form th:action="'/myprofile/delete/' + ${post.id} " method="POST">
+            <button type="submit">Delete</button>
+        </form>
+    </div>
 </div>
 
 </form>

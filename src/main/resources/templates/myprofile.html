@@ -6,6 +6,11 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<nav>
+    <ul>
+        <a th:href="'/logout'">Log out</a>
+    </ul>
+</nav>
 <h1>welcome [[${username}]]</h1>
 <div>
     <h3>
@@ -18,7 +23,7 @@
 <div>
     <h2>Create a Post</h2>
     <form method="POST" th:action="'/myprofile/posts'">
-        <label for="body">Post body</label>
+        <label for="body">Post</label>
         <input type="text" id="body" name="body">
         <input type="submit">
     </form>

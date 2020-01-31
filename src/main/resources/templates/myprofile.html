@@ -19,19 +19,22 @@
         <span th:text="${loggedUser.last_Name}"></span>
         <span th:text="${loggedUser.date_Of_Birth}"></span>
         <span th:text="${loggedUser.bio}"></span>
-        <img th:src="${loggedUser.picture}">
+        <img th:src="${loggedUser.picture}" width="100" height="100">
     </h3>
 </div>
 <div>
     <h2>Find Friends!</h2>
     <ul>
-        <li class="users" th:each="user : ${registeredUsers}">
-            [[${user.first_Name}]] [[${user.last_Name}]]
+        <div class="users" th:each="user : ${registeredUsers}">
+            <section>
+            <span th:text="${user.first_Name} + ' ' + ${user.last_Name}"></span>
+            <img th:src="${user.picture}" width="100" height="100">
             <form action="/viewUser" method="GET">
                 <input type="hidden" th:value="${user.username}" name="username">
                 <input type="submit" value="View Profile">
+                </section>
             </form>
-        </li>
+        </div>
     </ul>
 </div>
 <div>

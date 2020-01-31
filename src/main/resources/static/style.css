@@ -9,6 +9,10 @@ box-sizing {
   margin: 0.5em;
 }
 
-Header{
-    background-color: DimGrey;
+input[type="text"], textarea {
+
+  background-color : #d1d1d1;
+
 }
+
+

@@ -23,8 +23,8 @@
 <body>
     <ul>
         <div th:each="friend : ${friends}">
-            <p>Friend: [[${friend.first_Name}]]</p>
-            <img th:src="${friend.picture}">
+            <p>Friend:<span th:text="${friend.first_Name}"></span></p>
+            <img th:src="${friend.picture}" width="100" height="100">
                 <section th:each="post : ${friend.posts}">
                     <p>Post:<span th:text="${post.body}"></span></p>
                     <p>Date Posted:<span th:text="${post.created_At_TimeStamp}"></span></p>

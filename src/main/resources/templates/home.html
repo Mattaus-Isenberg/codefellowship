@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Registration</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <nav>
@@ -10,7 +11,8 @@
         <a th:href="'/login'">Log in</a>
     </ul>
 </nav>
-<h1>Please register</h1>
+<h1>CodeFellowship</h1>
+<h2>The best in Reverse Stalking!</h2>
 
 <h2> Create new user</h2>
 <form action="/signup" method="POST">
@@ -20,6 +22,7 @@
     Last <input type="text" name="last_Name">
     DOB <input type="date" name="date_Of_Birth">
     Bio <input type="text" name="bio">
+    Picture <input type="text" name="picture">
     <input type="submit">
 </form>
 </body>

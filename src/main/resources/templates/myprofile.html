@@ -9,6 +9,7 @@
 <nav>
     <ul>
         <a th:href="'/logout'">Log out</a>
+        <a href="/feed">View Feed</a>
     </ul>
 </nav>
 <h1>welcome [[${username}]]</h1>
@@ -18,7 +19,20 @@
         <span th:text="${loggedUser.last_Name}"></span>
         <span th:text="${loggedUser.date_Of_Birth}"></span>
         <span th:text="${loggedUser.bio}"></span>
+        <img th:src="${loggedUser.picture}">
     </h3>
+</div>
+<div>
+    <h2>Find Friends!</h2>
+    <ul>
+        <li class="users" th:each="user : ${registeredUsers}">
+            [[${user.first_Name}]] [[${user.last_Name}]]
+            <form action="/viewUser" method="GET">
+                <input type="hidden" th:value="${user.username}" name="username">
+                <input type="submit" value="View Profile">
+            </form>
+        </li>
+    </ul>
 </div>
 <div>
     <h2>Create a Post</h2>
@@ -32,9 +46,6 @@
     <div th:each="post : ${loggedUser.posts}">
         <p th:text="'Created ' + ${post.created_At_TimeStamp}"></p>
         <p th:text="'Post: ' + ${post.body}"></p>
-        <form th:action="'/myprofile/delete/' + ${post.id} " method="POST">
-            <button type="submit">Delete</button>
-        </form>
     </div>
 </div>
 

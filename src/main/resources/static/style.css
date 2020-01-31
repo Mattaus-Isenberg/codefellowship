@@ -1,0 +1,14 @@
+
+box-sizing {
+    border-box;
+}
+
+* {
+  background-color: LightBlue;
+  color: Black;
+  margin: 0.5em;
+}
+
+Header{
+    background-color: DimGrey;
+}

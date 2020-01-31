@@ -1,24 +1,19 @@
 package com.echokinetic.CodeFellowship.Controllers;
 
-
-
 import com.echokinetic.CodeFellowship.Models.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.net.URL;
 import java.security.Principal;
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 public class ApplicationUserController {
@@ -32,17 +27,11 @@ public class ApplicationUserController {
     @Autowired private PasswordEncoder passwordEncoder;
 
     @PostMapping("/signup")
-    public RedirectView createNewApplicationUser(String username, String password, String first_Name, String last_Name, Date date_Of_Birth, String bio)
+    public RedirectView createNewApplicationUser(String username, String password, String first_Name, String last_Name, Date date_Of_Birth, String bio, URL picture)
     {
         System.out.println("You are adding a user");
-        // make the user AND salt and hash the password
-        // this does the salting and hashing for you
-        ApplicationUser newUser = new ApplicationUser(username, passwordEncoder.encode(password), first_Name, last_Name, date_Of_Birth, bio);
-
-        // save the user to db
+        ApplicationUser newUser = new ApplicationUser(username, passwordEncoder.encode(password), first_Name, last_Name, date_Of_Birth, bio, picture);
         applicationUserRepository.save(newUser);
-
-        // send them back home
         return new RedirectView("login");
     }
 
@@ -57,6 +46,9 @@ public class ApplicationUserController {
     {
         ApplicationUser applicationUser = applicationUserRepository.findByUsername(p.getName());
         List<Post> posts = postRepository.findByUser(applicationUser);
+        List<ApplicationUser> registeredUsers = applicationUserRepository.findAll();
+        registeredUsers.remove(applicationUserRepository.findByUsername(p.getName()));
+        m.addAttribute("registeredUsers", registeredUsers);
         m.addAttribute("posts", posts);
         m.addAttribute("loggedUser", applicationUser);
         m.addAttribute("username", p.getName());
@@ -96,4 +88,46 @@ public class ApplicationUserController {
         postRepository.save(post);
         return new RedirectView("/myprofile");
     }
+
+    @GetMapping("/viewUser")
+    public String displayRegisteredUserProfile(String username, Model m, Principal p)
+    {
+        if (p != null)
+        {
+            ApplicationUser loggedInUser = applicationUserRepository.findByUsername(p.getName());
+            ApplicationUser user = applicationUserRepository.findByUsername(username);
+            m.addAttribute("loggedInUser", loggedInUser);
+            m.addAttribute("user", user);
+            return "friend";
+        }
+        return "login";
+    }
+
+    @PostMapping("/follow")
+    public RedirectView follow(String newFriend, Principal p) {
+
+        if (p != null) {
+            ApplicationUser new_Friend = applicationUserRepository.findByUsername(newFriend);
+            ApplicationUser me = applicationUserRepository.findByUsername(p.getName());
+            me.follow(new_Friend);
+            applicationUserRepository.save(me);
+        }
+        return new RedirectView("/myprofile");
+    }
+
+    @GetMapping("/feed")
+    public String viewFeed(Principal p, Model m)
+    {
+        if (p != null)
+        {
+            ApplicationUser me = applicationUserRepository.findByUsername(p.getName());
+            Set<ApplicationUser> friends = me.getFollowing();
+            m.addAttribute("friends", friends);
+            m.addAttribute("username", p.getName());
+
+            return "feed";
+        }
+        return "login";
+    }
+
 }

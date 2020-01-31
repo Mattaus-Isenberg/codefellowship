@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>My Feed</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <h2 class="CurrentLoggedInUserName">User: [[${username}]]</h2>
+    <nav>
+        <a href="/logout">Log out</a>
+        <a href="/myprofile">My Profile</a>
+        <a href="/feed">My Feed</a>
+    </nav>
+    <h1>CodeFellowship</h1>
+    <h2>Reverse Cyber Stalking!</h2>
+</header>
+
+<main>
+<body>
+    <ul>
+        <div th:each="friend : ${friends}">
+            <p>Friend: [[${friend.first_Name}]]</p>
+            <img th:src="${friend.picture}">
+                <section th:each="post : ${friend.posts}">
+                    <p>Post:<span th:text="${post.body}"></span></p>
+                    <p>Date Posted:<span th:text="${post.created_At_TimeStamp}"></span></p>
+                    <form action="/viewUser" method="GET">
+                        <input type="hidden" th:value="${friend.username}" name="username">
+                        <input type="submit" value="View User">
+                    </form>
+                </section>
+        </div>
+    </ul>
+</body>
+</main>
+
+</html>

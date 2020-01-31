@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<header>
+    <h2>User: [[${loggedInUser.username}]]</h2>
+    <nav>
+        <a href="/logout">Log out</a>
+        <a href="/myprofile">My Profile</a>
+        <a href="/feed">My Feed</a>
+    </nav>
+</header>
+
+<main>
+    <h1>CodeFellowship</h1>
+        <h2>Reverse Cyber Stalking!</h2>
+
+    <img th:src="${user.picture}">
+    <p>First Name: [[${user.first_Name}]]</p>
+    <p>Last Name:  [[${user.last_Name}]]</p>
+    <p>Birthday:   [[${user.date_Of_Birth}]]</p>
+    <p>Bio:        [[${user.bio}]]</p>
+
+
+    <form action="/follow" method="POST">
+        <input type="hidden" th:value="${user.username}" name="newFriend">
+        <input type="submit" value="Follow">
+    </form>
+
+</main>
+
+</body>
+</html>

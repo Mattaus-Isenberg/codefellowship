@@ -4,9 +4,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.net.URL;
 import java.sql.Date;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class ApplicationUser implements UserDetails
@@ -15,8 +17,21 @@ public class ApplicationUser implements UserDetails
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
 
+
+    @ManyToMany
+    @JoinTable(
+            name="friends",
+            joinColumns = @JoinColumn(name="registered_user"),
+            inverseJoinColumns = @JoinColumn(name="following")
+    )
+    private Set<ApplicationUser> following;
+
+    @ManyToMany(mappedBy = "following")
+    private Set<ApplicationUser> following_Me;
+
     @OneToMany(mappedBy = "user")
-    public List<Post> posts;
+    private List<Post> posts;
+
 
     String username;
     String password;
@@ -25,10 +40,21 @@ public class ApplicationUser implements UserDetails
     String last_Name;
     Date date_Of_Birth;
     String bio;
+    URL picture;
+
+    public URL getPicture() {
+        return picture;
+    }
+
+    public void setPicture(URL picture) {
+        this.picture = picture;
+    }
+
+
 
     public ApplicationUser() {};
 
-    public ApplicationUser(String username, String password, String first_Name, String last_Name, Date date_Of_Birth, String bio)
+    public ApplicationUser(String username, String password, String first_Name, String last_Name, Date date_Of_Birth, String bio, URL picture)
     {
         this.username = username;
         this.password = password;
@@ -36,6 +62,7 @@ public class ApplicationUser implements UserDetails
         this.last_Name = last_Name;
         this.date_Of_Birth = date_Of_Birth;
         this.bio = bio;
+        this.picture = picture;
     }
 
     public List<Post> getPosts()
@@ -48,9 +75,29 @@ public class ApplicationUser implements UserDetails
         this.posts = posts;
     }
 
+    public void follow(ApplicationUser user)
+    {
+        following.add(user);
+    }
     public long getId()
     {
         return id;
+    }
+
+    public Set<ApplicationUser> getFollowing() {
+        return following;
+    }
+
+    public void setFollowing(Set<ApplicationUser> following) {
+        this.following = following;
+    }
+
+    public Set<ApplicationUser> getFollowing_Me() {
+        return following_Me;
+    }
+
+    public void setFollowing_Me(Set<ApplicationUser> following_Me) {
+        this.following_Me = following_Me;
     }
 
     @Override

@@ -44,6 +44,8 @@ public class ApplicationUserController {
     @GetMapping("/myprofile")
     public String getProfile(Principal p, Model m)
     {
+        if (p != null)
+        {
         ApplicationUser applicationUser = applicationUserRepository.findByUsername(p.getName());
         List<Post> posts = postRepository.findByUser(applicationUser);
         List<ApplicationUser> registeredUsers = applicationUserRepository.findAll();
@@ -54,6 +56,8 @@ public class ApplicationUserController {
         m.addAttribute("username", p.getName());
         m.addAttribute("user", p);
         return "myprofile";
+        }
+        return "login";
     }
 
     @PostMapping("/login")
@@ -63,21 +67,6 @@ public class ApplicationUserController {
         m.addAttribute("loggedUser", applicationUser);
         m.addAttribute("user", p);
         return new RedirectView("myprofile");
-    }
-
-
-    @GetMapping("/users/{id}")
-    public String showUserInfo()
-    {
-        return "users";
-    }
-
-    @GetMapping("/posts")
-    public String getPosts(Model m)
-    {
-        List<Post> posts = postRepository.findAll();
-        m.addAttribute("posts", posts);
-        return "tracks";
     }
 
     @PostMapping("/myprofile/posts")
@@ -104,9 +93,10 @@ public class ApplicationUserController {
     }
 
     @PostMapping("/follow")
-    public RedirectView follow(String newFriend, Principal p) {
-
-        if (p != null) {
+    public RedirectView follow(String newFriend, Principal p)
+    {
+        if (p != null)
+        {
             ApplicationUser new_Friend = applicationUserRepository.findByUsername(newFriend);
             ApplicationUser me = applicationUserRepository.findByUsername(p.getName());
             me.follow(new_Friend);
